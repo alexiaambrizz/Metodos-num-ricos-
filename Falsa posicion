@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <math.h>
+
+double f(double x) {
+    double euler = M_E;
+    return pow( M_E, -x) -log(x); // Definimos la funcion
+}
+
+void falsa_posicion(double (*f)(double), double a, double b, double epsilon) {
+    double fa = f(a);
+    double fb = f(b);
+    double c = 0.0;
+    double fc = 0.0;
+    int iter = 0;
+
+    printf("Iter\tA\t\tB\t\tC\t\tf(C)\n");
+    printf("--------------------------------------------------\n");
+
+    while (fabs(b - a) >= epsilon) {
+        iter++;
+        c = (a * fb - b * fa) / (fb - fa);
+        fc = f(c);
+
+        printf("%d\t%f\t%f\t%f\t%f\n", iter, a, b, c, fc);
+
+        if (fc == 0.0) {
+            break;
+        }
+        else if (fc * fb < 0) {
+            a = c;
+            fa = fc;
+        }
+        else {
+            b = c;
+            fb = fc;
+        }
+    }
+
+    printf("--------------------------------------------------\n");
+    printf("La raíz aproximada es: %f\n", c);
+}
+
+int main() {
+    double a, b, epsilon;
+
+    printf("Introduce el valor de a: ");
+    scanf("%lf", &a);
+
+    printf("Introduce el valor de b: ");
+    scanf("%lf", &b);
+
+    printf("Introduce el valor de epsilon: ");
+    scanf("%lf", &epsilon);
+
+    falsa_posicion(f, a, b, epsilon);
+
+    return 0;
+}
